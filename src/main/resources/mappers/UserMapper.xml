@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxxx.crm.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.xxxx.crm.vo.User">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+    <result column="true_name" jdbcType="VARCHAR" property="trueName" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="is_valid" jdbcType="INTEGER" property="isValid" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id,  user_name, user_pwd
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from t_user
+    where id = #{userId,jdbcType=INTEGER}
+  </select>
+  <!-- 根据用户名查询用户对象 -->
+  <select id="queryUserByUserName" parameterType="string" resultType="com.xxxx.crm.vo.User">
+    select
+    <include refid="Base_Column_List" />
+    from
+    t_user
+    where
+    user_name = #{userName}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xxxx.crm.vo.User">
+    insert into t_user (id, username, password,
+      createtime, updatetime, createAccount,
+      updateAccount, nickname, email,
+      portrait)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{createaccount,jdbcType=VARCHAR},
+      #{updateaccount,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+      #{portrait,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xxxx.crm.vo.User">
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userPwd != null">
+        user_pwd,
+      </if>
+      <if test="trueName != null">
+        true_name,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null">
+        #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xxxx.crm.vo.User">
+    update t_user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null">
+        true_name = #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xxxx.crm.vo.User">
+    update t_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      createAccount = #{createaccount,jdbcType=VARCHAR},
+      updateAccount = #{updateaccount,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      portrait = #{portrait,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <sql id="Blob_Column_List">
+    avatar, roles, description
+  </sql>
+  <select id="selectUserByName" parameterType="string" resultType="com.xxxx.crm.vo.User">
+        select*
+        from t_user
+        where user_name = #{userName}
+    </select>
+  <!--查询所有的销售人信息-->
+  <select id="selectAllSales" resultType="java.util.Map">
+        select u.id,
+               user_name as uname
+        from t_user as u
+                 LEFT JOIN
+             t_user_role as ur
+             on ur.user_id = u.id
+                 LEFT JOIN t_role as r
+                           on
+                               r.id = ur.role_id
+        where r.role_name = "销售";
+    </select>
+
+  <!--根据多参数(UserQuery)查询用户信息-->
+  <!--根据条件查询用户信息-->
+  <select id="selectByParams" parameterType="com.xxxx.crm.query.UserQuery" resultType="com.xxxx.crm.vo.User">
+    select*
+    from t_user
+    <where>
+      is_valid=1
+      <if test="null !=userName and userName !=''">
+        and user_name like concat('%',#{userName},'%')
+      </if>
+      <if test="null !=phone and phone !=''">
+        and phone =#{phone}
+      </if>
+      <if test="null !=email and email !=''">
+        and email =#{email}
+      </if>
+    </where>
+  </select>
+
+  <!-- （批量）删除操作 -->
+  <update id="deleteBatch">
+    update
+    t_user
+    set
+    is_valid = 0
+    where id in
+    <foreach collection="array" item="id" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </update>
+  <!--添加返回对象的主键，自动增长的-->
+  <insert id="insertUserByReturnKey" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userPwd != null">
+        user_pwd,
+      </if>
+      <if test="trueName != null">
+        true_name,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null">
+        #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>
