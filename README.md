@@ -77,6 +77,6 @@
 
 4.在pom.xml中修改成你本地的jdk版本等运行环境
 
-5.点击starter运行编译完成后，启动访问 **http://localhost:8081/crm** 
-目前只开发了两个核心模块：营销管理模块和系统设置模块，后期会继续更新...
+5.点击starter运行编译完成后，启动访问 **http://localhost:8081/crm** , 目前只开发了两个核心模块：营销管理模块和系统设置模块，后期会继续更新...
 
+![image-20210705234122596](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210705234122596.png)
